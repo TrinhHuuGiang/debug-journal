@@ -51,6 +51,7 @@ winetricks
 - in `winetricks` -> chose `your machine name` -> download `dll, library` from menu
 
 ## Install an application for wine machine
+### Basic method
 - After install wine machine, we can go to winetrick to see wineprefix like this:
     - <img src="./img/winetricks_prefix.png" alt="wine prefix" width="80%">
 - Remember this `prefix` link, then type in new `bash`:
@@ -59,3 +60,8 @@ winetricks
     wine [file.exe] # <- exe file
     wine msiexec /i [something.msi]  # <- wine call program `msiexec` then send flag install /i and file .msi
     ```
+### Install by winetricks
+- In winetricks, find your machine want install application
+- Choosing open `Run explorer`
+- Here we can find where the file `exe` `msi` ... exist
+- Choose it and install in expect folder of this wine machine
