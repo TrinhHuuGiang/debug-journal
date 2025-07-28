@@ -95,6 +95,17 @@
           # nó sẽ blocking cho đến khi fflush hết
           # đôi khi dd không chờ fflush mà nó tắt luôn thì gây thiếu dữ liệu khi rút usb đột ngột hoặc reject sớm
     ```
+## 4. cài hệ điều hành
+- Linux yêu cầu cấu hình BIOS nhận dạng ổ cứng là `AHCI` thay vì `RAID`, các chế độ BIOS hỗ trợ Harddrive:
+  - `Disable` dùng cho đời cũ như HDD
+  - `AHCI` hỗ trợ cấu hình HDD, SSD chạy độc lập, chỉ dùng được 1 ổ ở 1 thời điểm
+  - `RAID` hỗ trợ chạy song song nhiều ổ SSD, HDD.
+    - RAID mode 0 cần ổ >= 2, tổng dung lượng các ổ gộp thành 1 ổ
+      - hỏng 1 ổ là hỏng hết dữ liệu
+    - RAID mode >=1 thì ưu tiên chạy song song các ổ và mỗi ổ lưu back up của ổ chính
+      - An toàn dữ liệu vì có back up
+- Linux `không có firmware nhân diện RAID` nên khi cài USBboot mà dùng mode `RAID` sẽ không thấy được ổ cứng
+  - `Phải set sang AHCI`
 
 # Lưu ý quan trong khi chuyển đổi giữa các giao diện Ubuntu (Flavors)
 - Tốt nhất là cứ tải các bản DE về nhưng đừng gỡ bản cũ vì nó gây lỗi giao diện nếu khoogn biết thao tác.
