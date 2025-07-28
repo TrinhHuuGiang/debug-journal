@@ -96,6 +96,7 @@
           # đôi khi dd không chờ fflush mà nó tắt luôn thì gây thiếu dữ liệu khi rút usb đột ngột hoặc reject sớm
     ```
 ## 4. cài hệ điều hành
+### Cấu hình quản lý ổ cứng
 - Linux yêu cầu cấu hình BIOS nhận dạng ổ cứng là `AHCI` thay vì `RAID`, các chế độ BIOS hỗ trợ Harddrive:
   - `Disable` dùng cho đời cũ như HDD
   - `AHCI` hỗ trợ cấu hình HDD, SSD chạy độc lập, chỉ dùng được 1 ổ ở 1 thời điểm
@@ -106,6 +107,10 @@
       - An toàn dữ liệu vì có back up
 - Linux `không có firmware nhân diện RAID` nên khi cài USBboot mà dùng mode `RAID` sẽ không thấy được ổ cứng
   - `Phải set sang AHCI`
+
+### Cấu hình hệ thống file
+- `ntfs` cho Window
+- `ext4` cho linux
 
 # Lưu ý quan trong khi chuyển đổi giữa các giao diện Ubuntu (Flavors)
 - Tốt nhất là cứ tải các bản DE về nhưng đừng gỡ bản cũ vì nó gây lỗi giao diện nếu khoogn biết thao tác.
