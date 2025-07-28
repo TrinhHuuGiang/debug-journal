@@ -1,3 +1,4 @@
+```bash
 lsusb # list usb
 
 ls /dev/ttyACM* /dev/ttyUSB*  # list device connect 
@@ -5,5 +6,4 @@ ls /dev/ttyACM* /dev/ttyUSB*  # list device connect
 			# USB like CDC ACM (Communication Device Class) using driver `cdc_acm`
 			# `Teletypewriter` hay `tty` :v
 dmesg | tail -30 # diagnostic message and lastest 30 row log from OS
-
-
+```
