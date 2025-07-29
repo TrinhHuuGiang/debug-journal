@@ -1,9 +1,12 @@
 # Refer
 - [Ubuntu variants](https://ubuntu.com/desktop/flavors)
+- [Install Lubuntu](https://manual.lubuntu.me/stable/1/1.3/installation.html)
+- [Master boot record](https://en.wikipedia.org/wiki/Master_boot_record)
 - Nội dung
     - [so sánh bản phân phối Flavors](#so-sánh-các-bản-phân-phối-ubuntu-ubuntu-flavors)
     - [Tạo usb boot Lubuntu trên Ubuntu](#tạo-usb-boot-lubuntu)
     - [Lưu ý quan trọng khi đổi giao diện Flavors](#lưu-ý-quan-trong-khi-chuyển-đổi-giữa-các-giao-diện-ubuntu-flavors)
+
 
 # So sánh các bản phân phối Ubuntu (Ubuntu Flavors)
 
@@ -108,10 +111,86 @@
 - Linux `không có firmware nhân diện RAID` nên khi cài USBboot mà dùng mode `RAID` sẽ không thấy được ổ cứng
   - `Phải set sang AHCI`
 
+- Tiếp theo, mặc định khi cài theo kiểu `Erase disk` thì sẽ tạo lại bảng `MBR`
+  - `MBR` thì chỉ hỗ trợ tạo 4 partitions và quản lý đến 2TB
+  - `GUID` hay `GPT` có thể  tạo lớn hơn và nhiều phân vùng hơn nhưng không hỗ trợ boot Legacy (chọn ổ cứng tuần tự) cho máy cũ
+- Vì vậy chỉ có thể dùng Legacy boot mode để duyệt tuần tự ổ
+- Sau khi cài LUbuntu bằng `Erase disk` hệ thống `MBR` được setup nhưng nó không biết cái khởi động `Lubuntu` vì vậy khi restart máy báo `No boot device found`   
+  Phải làm sao? khi này cần cài thêm cho nó bootloaer tên là `GRUB`
+  - Lưu ý cái này là cài `Linux`, còn `Window` không dùng `GRUB` mà dùng phần mềm riêng và tự động của nó.
+  - Nếu cài `Window` sau linux thì phải cấu hình lại `GRUB` là `bootloader` nếu không không thể tìm ra Linux do đang dùng `window bootloader`
+    - Như vậy `GRUB` có thể tìm ra Window nhưng ngược lại thì không 
 ### Cấu hình hệ thống file
 - `ntfs` cho Window
 - `ext4` cho linux
 
+### Cấu hình lại GRUB
+1. Với `MBR` được giới thiệu trong wiki, nó nằm ở đầu ổ đĩa nơi mà BIOS tìm đến để nạp Bootloader tại đây ra RAM:
+  - Lưu ý `MBR` không hỗ trợ `Window`
+  - MBR có cấu trúc classic bao gồm:
+    - Bootstrap code area ở địa chỉ  `0x0000`, tổng size `446 bytes`
+      - Dùng để chứa chương trình `bootloader`
+    - `0x01BE` , `0x01CE` , `0x01DE`, `0x01EE` mỗi phần này rộng 16byte để lưu mô tả các `partitions` từ 1 - 4 như đã nói trên thì MBR chỉ hỗ trợ 4 partions (thiết kế cứng luôn)
+      - Mỗi partition có thể là 1 hệ điều hành hoặc ổ của hệ điều hành
+      - Mặc định bootloader cơ bản nhất chỉ nhì partion đầu tiên và nhảy luôn vào hệ điều hành
+        - Các partion còn lại làm ổ con cho nó
+    - tại `0x01FE` sau đó là 2 byte `Boot signature`
+  - => tổng MBR là 512 byte (== 1 sector cho ổ cứng)
+  - ngoài ra trong Wiki đề cập 1 số cấu trúc khác nhưng không đi sâu hơn nữa.
+2. Tiếp theo là bootloader `GRUB`, đây là bootloader sau đời sau, có hỗ trợ quản lý vấn đề chạy được nhiều
+hệ điều hành trên 1 máy.
+  - Như logic trên thì có thể có đến 4 hệ điều hành chạy song song và không có ổ con cho chúng
+    - Ngoài ra GRUB có thể cấu hình phức tạp để tạo ra nhiều ổ hơn  
+      thông qua việc modify parition cuối cùng thành 1 bảng logic để tự quản lý vùng này.
+  - `GRUB` (Grand Unified Bootloader) cung cấp giao diện lựa chọn trực quan thay vì chỉ boot luôn vào phân
+  vùng đầu tiên.
+    - Bootloader GRUB nằm tại `Bootloader` của `MBR`
+    - Phần thứ 2 của chương trình nằm strong vùng `gap` được thiết kế ở giữa `MBR` và `partition 1`
+      - Các chương trình chia ổ cứng, quản lý ổ yêu cầu `partition 1` luôn phải bắt đầu ở vị trí 
+      bắt đầu từ sector 2048. như vậy Theo lý thuyết phần MBR có thể mở rộng ra 2048 lần ban đầu.
+        - Vùng gap tương đương 2047 sector khoảng (gần 1MB)
+        - Vì vậy chương trình này cho khả năng quản lý vượt trội hơn.
+  - `GPT` sẽ không nói ở đây dù nó khá vượt trội
+
+3. Nạp `GRUB` cho `MBR`:
+  - `GRUB` nhắc lại chỉ support `Linux` hoặc OS like Unix
+  - Trong `USB Boot` mở terminal:
+    - OK giờ thực hiện cẩn thận `grub-install` và `update-grub`
+    - Trong `USB boot terminal` nhảy đến mục `/mnt` để `mount` với LUbuntu vừa cài.
+      - Gõ `lsblk` để tìm tên của ổ cứng, ở đây có thể là:
+        - `sdX` cho SSD `sata` hoặc `nvme0n1` hoặc tương tự cho SSD `nvme`
+      - Gõ `lsblk -f` để xem tên của ổ là gì, ở dây bên trong `nvme0n1` có 1 phân vùng con là `nvme0n1p1` là vùng nhớ cho OS Lubuntu đã cài.
+      - Giờ trong `/mnt` tạo thư mục tên là `local_lubun_root` hoặc gì đó tùy
+  - Giờ cấu hình liên kết với hệ điều hành Lubuntu để cài hệ thống `GRUB`:
+    - chạy tập lệnh:
+    ```bash
+    sudo mount /dev/nvme0n1p1 local_lubun_root # bind với hệ thống file thật
+
+    sudo mount --bind /dev  local_lubun_root/dev # file ảo phải bind thì không có hệ thông file để link
+    sudo mount --bind /proc local_lubun_root/proc
+    sudo mount --bind /sys  local_lubun_root/sys
+
+    sudo chroot local_lubun_root
+
+    ```
+
+    - Giờ ta đang trong hệ thông file của Lubuntu rồi, thực hiện các bước sau để cài đặt `GRUB` và đăng ký
+    cho Lubuntu 1 file config, sau này `GRUB` tìm đến nó
+      - Tìm đến ổ cứng để cài `GRUB`
+      ```bash
+      lsblk -f # duyệt ổ cứng, tìm tên đại diện cho ổ cứng ,  
+      ```
+        - Lưu ý ổ cứng chứ không phải các partion hay ổ con
+          - Ví dụ:
+            - `nvme0n1` chứ không phải `nvme0n1p1`
+            - `sdX` chứ không phải `sdXi`
+      - Cài `GRUB` theo chế độ `legacy mode`:
+        ```bash
+        grub-install /dev/nvme0n1 # thay nvme01n1 thành tên ổ tùy máy
+
+        update-grub # cập nhật file GRUB config cho hệ điều hành
+        ```
+      
 # Lưu ý quan trong khi chuyển đổi giữa các giao diện Ubuntu (Flavors)
 - Tốt nhất là cứ tải các bản DE về nhưng đừng gỡ bản cũ vì nó gây lỗi giao diện nếu khoogn biết thao tác.
 - Giữ lại bản cũ đôi khi dễ hơn khi chuyển qua lại các giao diện qua đăng nhập
