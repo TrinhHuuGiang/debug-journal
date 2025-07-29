@@ -7,6 +7,11 @@
     - [Tạo usb boot Lubuntu trên Ubuntu](#tạo-usb-boot-lubuntu)
     - [Lưu ý quan trọng khi đổi giao diện Flavors](#lưu-ý-quan-trong-khi-chuyển-đổi-giữa-các-giao-diện-ubuntu-flavors)
 
+- Gợi ý:
+  - Nên dùng chuẩn UEFI vì nó chương trình cập nhật tương thích với các ổ cứng HDD, sata , nvme
+    - Cấu trúc bảng `GPT` kết hợp với bootloader `GRUB` cho phép tương thích ngược với `Legacy`
+    - Ưu điểm UEFI cho phép quản lý nhiều phân vùng hơn khi nó yêu cầu 1 partition riêng cho hệ thống quản lý phân vùng EFI System Partition thay vì chỉ 4 phân vùng nhưu `Legacy`
+  - Một số usb boot chỉ có `MBR` trong `iso` nên yêu cầu Legacy thì cần chuyển về `Legacy`
 
 # So sánh các bản phân phối Ubuntu (Ubuntu Flavors)
 
@@ -99,7 +104,7 @@
           # đôi khi dd không chờ fflush mà nó tắt luôn thì gây thiếu dữ liệu khi rút usb đột ngột hoặc reject sớm
     ```
 ## 4. cài hệ điều hành
-### Cấu hình quản lý ổ cứng
+### Cấu hình quản lý ổ cứng (Disable/AHCI/RAID)
 - Linux yêu cầu cấu hình BIOS nhận dạng ổ cứng là `AHCI` thay vì `RAID`, các chế độ BIOS hỗ trợ Harddrive:
   - `Disable` dùng cho đời cũ như HDD
   - `AHCI` hỗ trợ cấu hình HDD, SSD chạy độc lập, chỉ dùng được 1 ổ ở 1 thời điểm
@@ -111,22 +116,29 @@
 - Linux `không có firmware nhân diện RAID` nên khi cài USBboot mà dùng mode `RAID` sẽ không thấy được ổ cứng
   - `Phải set sang AHCI`
 
+### Cấu hình quản lý bootmode (Legacy)
 - Tiếp theo, mặc định khi cài theo kiểu `Erase disk` thì sẽ tạo lại bảng `MBR`
   - `MBR` thì chỉ hỗ trợ tạo 4 partitions và quản lý đến 2TB
-  - `GUID` hay `GPT` có thể  tạo lớn hơn và nhiều phân vùng hơn nhưng không hỗ trợ boot Legacy (chọn ổ cứng tuần tự) cho máy cũ
-- Vì vậy chỉ có thể dùng Legacy boot mode để duyệt tuần tự ổ
-- Sau khi cài LUbuntu bằng `Erase disk` hệ thống `MBR` được setup nhưng nó không biết cái khởi động `Lubuntu` vì vậy khi restart máy báo `No boot device found`   
+  - `GPT` có thể  tạo lớn hơn và nhiều phân vùng hơn nhưng không hỗ trợ boot Legacy (chọn ổ cứng tuần tự) cho máy cũ
+- Vì vậy chỉ có thể dùng Legacy boot mode để duyệt tuần tự ổ qua `MBR`
+- Sau khi cài LUbuntu bằng `Erase disk` hệ thống `MBR` được setup nhưng nó có thể không biết cách khởi động `Lubuntu` vì vậy khi restart máy báo `No boot device found`   
   Phải làm sao? khi này cần cài thêm cho nó bootloaer tên là `GRUB`
   - Lưu ý cái này là cài `Linux`, còn `Window` không dùng `GRUB` mà dùng phần mềm riêng và tự động của nó.
   - Nếu cài `Window` sau linux thì phải cấu hình lại `GRUB` là `bootloader` nếu không không thể tìm ra Linux do đang dùng `window bootloader`
     - Như vậy `GRUB` có thể tìm ra Window nhưng ngược lại thì không 
+- Sự khác nhau giữa Legacy/UEFI:
+  - Legacy là chuẩn boot kiểu cũ, hỗ trợ tìm boot `MBR` nằm tại địa chỉ 0x0000, tại sector 0
+  - UEFI là chuẩn boot kiểu mới, hỗ tợ tìm file cấu hình trong `GPT` tại sector 1  
+    bên cạnh đó sector 0 sẽ được nạp 1 `MBR` giả để tương thích ngược với legacy.
+      - Nếu cần `Legacy`, khi cấu hình phân vùng ta phải để chừa ra 1 đến 2MB để GRUB tìm đến nó.
+
+
 ### Cấu hình hệ thống file
 - `ntfs` cho Window
 - `ext4` cho linux
 
-### Cấu hình lại GRUB
+### Cấu hình lại GRUB cho hệ thống Legacy (HDD, SATA, maybe support NVME (notrecommend))
 1. Với `MBR` được giới thiệu trong wiki, nó nằm ở đầu ổ đĩa nơi mà BIOS tìm đến để nạp Bootloader tại đây ra RAM:
-  - Lưu ý `MBR` không hỗ trợ `Window`
   - MBR có cấu trúc classic bao gồm:
     - Bootstrap code area ở địa chỉ  `0x0000`, tổng size `446 bytes`
       - Dùng để chứa chương trình `bootloader`
@@ -153,7 +165,8 @@ hệ điều hành trên 1 máy.
   - `GPT` sẽ không nói ở đây dù nó khá vượt trội
 
 3. Nạp `GRUB` cho `MBR`:
-  - `GRUB` nhắc lại chỉ support `Linux` hoặc OS like Unix
+  - `GRUB` chỉ support `Linux` hoặc OS like Unix
+    - Nếu 1 window được cài vào hệ thống, bootloader riêng của nó sẽ ghi đè MBR để xóa GRUB
   - Trong `USB Boot` mở terminal:
     - OK giờ thực hiện cẩn thận `grub-install` và `update-grub`
     - Trong `USB boot terminal` nhảy đến mục `/mnt` để `mount` với LUbuntu vừa cài.
@@ -184,13 +197,20 @@ hệ điều hành trên 1 máy.
           - Ví dụ:
             - `nvme0n1` chứ không phải `nvme0n1p1`
             - `sdX` chứ không phải `sdXi`
-      - Cài `GRUB` theo chế độ `legacy mode`:
+
+      - Cài `GRUB` theo chế độ `legacy mode` hỗ trợ ssd sata, hdd nhưng nvme hầu như không hỗ trợ nếu bios Legacy đời cũ không hiểu giao tiếp nvme và thường bị bỏ qua khi duyệt:
         ```bash
-        grub-install /dev/nvme0n1 # thay nvme01n1 thành tên ổ tùy máy
+        grub-install /dev/[harddrive] # ổ tùy máy nhưng không bên dùng Legacy cho nvme, chỉ nên HDD hoặc sata
 
         update-grub # cập nhật file GRUB config cho hệ điều hành
         ```
-      
+      - Cài `GRUB` theo chế độ `UEFI` hỗ trợ tốt cho sata và nvme
+
+### Cấu hệ thống UEFI (HDD, SATA, NVME) 
+- [Setup GPT partion](https://askubuntu.com/questions/1253586/how-can-lubuntu-20-04-lts-be-installed-in-a-usb-which-can-boot-into-both-uefi)
+- Bên trong USB boot có thể chọn chế độ `Manual partition` và làm theo cấu hình link trên
+
+
 # Lưu ý quan trong khi chuyển đổi giữa các giao diện Ubuntu (Flavors)
 - Tốt nhất là cứ tải các bản DE về nhưng đừng gỡ bản cũ vì nó gây lỗi giao diện nếu khoogn biết thao tác.
 - Giữ lại bản cũ đôi khi dễ hơn khi chuyển qua lại các giao diện qua đăng nhập
