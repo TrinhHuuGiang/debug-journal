@@ -1,9 +1,9 @@
 # Troubleshoot LUbuntu after installed
 - Booting / Disk partitions
-    - OS reboot display white black terminal
-        - Retry link `Boot ESP/EFI partition` and retry `update-grub`, setup bind automatic with `Boot ESP/EFI partion` everytime reboot
+    - [OS reboot display white black terminal](#operating-system-boot-in-grub-terminal)
+        - [Retry link `Boot ESP/EFI partition` and retry `update-grub`, setup bind automatic with `Boot ESP/EFI partion` everytime reboot]
     - Update partition designed if OS not accept it
-        - Link `Swap partition` designed with OS everytime reboot
+        - [Link `Swap partition` designed with OS everytime reboot](#link-swap-partition-designed-with-os-everytime-reboot)
     
 - Missing driver
     - [Auto find missing driver](#2-using-default-check-driver-software-additionnal-drivers)
@@ -11,15 +11,15 @@
     - [Wifi connect faied](#wifi-connect-faied)
     - [Internet connected but can't browse DNS](#internet-connected-but-cant-browse-some-webpage)
 - Keyboard, touchpad
-    - [Missing Vietnamese keyboard]()
-    - [Touchpad tap-to-click fail](#1-touchpad-tap-to-click-fail)
+    - [Missing Vietnamese keyboard](#1-missing-vietnamese-typing)
+    - [Touchpad tap-to-click fail](#2-touchpad-tap-to-click-fail)
 - dpkg install, AppImage missing dependencies
     - [Fix by apt](#app-fix-missing-dependencies)
     - [AppImage: require FUSE](#2-appimage-require-fuse)
     - [AppImage: chrome-sandbox is owned by root and has mode 4755](#3-appimage-chrome-sandbox-is-owned-by-root-and-has-mode-4755)
 
 ## Booting 
-### Operating system
+### Operating system boot in `grub>` terminal
 Result of boot problem below after install new `Lubuntu` from `USB boot` is before `chroot` to  
 config `root` partition hasn't bind, mount enough requirements.
 - Result is `grub-install` success but `update-grub` make config files were broken or wrong way.
@@ -182,6 +182,12 @@ ibus restart
 
 
 ### 2. Touchpad tap-to-click fail
+- Go to `search bar` -> `Keyboard and mouse` -> `Mouse and Touchpad`
+    - Choose `Natural Scrolling`
+    - Choose `Tap to click`
+    - Choose `Tap and drag`
+    - On scrolling mode choose `Two-Finger` 
+
 
 ## App fix missing dependencies
 ### 1. Fix by app
