@@ -6,13 +6,13 @@
 - Internet
     - [Wifi connect faied](#wifi-connect-faied)
     - [Internet connected but can't browse DNS](#internet-connected-but-cant-browse-some-webpage)
-- Keyboard
-    - [Missing Vietnamese]
+- Keyboard, touchpad
+    - [Missing Vietnamese keyboard]()
     - [Touchpad tap-to-click fail](#1-touchpad-tap-to-click-fail)
 - dpkg install, AppImage missing dependencies
     - [Fix by apt](#app-fix-missing-dependencies)
-    - [AppImage: require FUSE]
-    - [AppImage: chrome-sandbox is owned by root and has mode 4755]
+    - [AppImage: require FUSE](#2-appimage-require-fuse)
+    - [AppImage: chrome-sandbox is owned by root and has mode 4755](#3-appimage-chrome-sandbox-is-owned-by-root-and-has-mode-4755)
 
 ## Internet connect faied
 
@@ -53,9 +53,19 @@
 
 
 ## Keyboard troubleshoot
-### 1. Touchpad tap-to-click fail
-s
 
+### 1. Missing Vietnamese typing
+```bash
+sudo apt update
+sudo apt install ibus-unikey
+
+ibus-setup # set up in IBUS GUI
+
+ibus restart
+```
+
+
+### 2. Touchpad tap-to-click fail
 
 ## App fix missing dependencies
 ### 1. Fix by app
