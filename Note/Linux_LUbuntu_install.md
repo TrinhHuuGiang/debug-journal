@@ -256,6 +256,7 @@ Sau khi lệnh dd hoàn tất, sử dụng lệnh `sync` để đảm bảo mọ
 ### 4. Cấu hệ thống UEFI (HDD, SATA, NVME)
 - [Setup GPT partion](https://askubuntu.com/questions/1253586/how-can-lubuntu-20-04-lts-be-installed-in-a-usb-which-can-boot-into-both-uefi)
 - Bên trong USB boot có thể chọn chế độ `Manual partition` và làm theo cấu hình link trên
+- Một số lỗi như không liên kết SWAP và ESP partitions xem thêm tại [Linux Lubuntu troubleshoot](./Linux_LUbuntu_troubleshoot.md#operating-system)
 
 ### 5 Cấu hình hệ thống UEFI hỗ trợ thêm cho Legacy mode
 - Chạy 2 hướng dẫn trên theo thứ tự:

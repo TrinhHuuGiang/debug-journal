@@ -1,7 +1,7 @@
 # Troubleshoot LUbuntu after installed
 - Booting / Disk partitions
     - OS reboot display white black terminal
-        - Retry link `Boot partition` and retry `update-grub`, setup bind automatic with `Boot partion` everytime reboot
+        - Retry link `Boot ESP/EFI partition` and retry `update-grub`, setup bind automatic with `Boot ESP/EFI partion` everytime reboot
     - Update partition designed if OS not accept it
         - Link `Swap partition` designed with OS everytime reboot
     
@@ -63,6 +63,35 @@ style="display: block; margin: 0 auto; width: 100%; height: auto;">
         # try reupdate grub
         sudo update-grub
         ```
+    - Last one, update auto bind with `EFI partition`, very useful if next time update-grub
+    ```bash
+    # check EFI partitions
+    lsblk -f
+    lsblf
+
+    # check partition type
+    sudo file -s /dev/nvme0n1p4 # suppose this is EFI partition
+    # get UUID
+    sudo blkid /dev/nvme0n1p4 # example UUID="89A5-6646", note not be PARTUUID
+
+    # Last, add this partition to `/etc/ftab` - file system table:
+    UUID=XXXX-XXXX /boot/efi vfat umask=0077 0 1
+    # change XXXX-XXXX == PARTUUID
+    # then add by `vi`
+    sudo vi /etc/fstab
+
+    UUID=89A5-6646 /boot/efi vfat umask=0077 0 1
+
+    # try mount all exist in ftab 
+    sudo mount -a
+
+    # check
+    lsblk
+    lsblk -f
+
+    # after that should reboot
+    reboot
+    ```
 
 ## Link `Swap partition` designed with OS everytime reboot
 - `Check`:
@@ -73,16 +102,22 @@ style="display: block; margin: 0 auto; width: 100%; height: auto;">
 - `Solution` is boot in LUbuntu OS, using `KDE Partition manager`, choose right partitions `Swap` then format it to `linuxswap filesystem`
     - Now run `file`, it will check type of `SWAP` partition:
     ```bash
-    sudo file -s /dev/nvme0n1p1
-    
     # my partition for swap is nvme0n1p1 when check by `lsblk` or `KDE pm`
+
+    sudo file -s /dev/nvme0n1p1
     /dev/nvme0n1p1: Linux swap file, 4k page size, little endian, version 1, size 524287 pages, 0 bad pages, LABEL=SWAP_MEM, UUID=e5ab7962-ce8e-4962-b685-3a0bd777ed3d
     # this inform point that this partition success format to Linux swap file
     # remember UUID=e5...
+    sudo blkid /dev/nvme0n1p1 #if UUID not exist try run this command
+                                # note that `file` is point exactly type of partition
+                                # `blkid` only point `TAG TYPE` not deep check partition
+                                # sometime user config `USB live` is wrong tag with type
+                                # it is result we are here to fix missing `swap`
 
     ```
     - Last one, register this partitions with OS by run:
     ```bash
+    sudo vi /etc/fstab # file system table
     # (this optional), we can find a `/swapfile` by OS auto gen when it run at origin here
     # try note it by \#/swapfile  swap    swap    defaults   0 0
     # then add Swap partition
