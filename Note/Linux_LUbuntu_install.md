@@ -84,15 +84,18 @@ Lubuntu được chọn vì các lý do sau:
 ### 2. Chuẩn bị USB trước khi tạo USB boot
 
 * **Bước 1: Liệt kê thiết bị block (`lsblk`)**
-    Sử dụng công cụ `lsblk` (list block devices) để xem danh sách các thiết bị lưu trữ dạng block như ổ cứng, thẻ nhớ, USB đang kết nối với hệ thống.
-    ```bash
-    lsblk
-    ```
-    hoặc để có thêm thông tin về định dạng file system:
-    ```bash
-    lsblk -f
-    ```
-    Đảm bảo xác định đúng tên thiết bị USB của bạn (ví dụ: `/dev/sdb`, `/dev/sdc`, v.v.). **Tuyệt đối không nhầm lẫn với ổ đĩa hệ thống chính của bạn để tránh mất dữ liệu.** Tên USB thường có dạng `sdX` và các phân vùng con là `sdXi` (ví dụ: `sdb1`, `sdb2`).
+  - Sử dụng công cụ `lsblk` (list block devices) để xem danh sách các thiết bị lưu trữ dạng block như ổ cứng, thẻ nhớ, USB đang kết nối với hệ thống.
+  ```bash
+  lsblk
+  ```
+    - <img src="./img/Linux_lsblk_usbboot.png" alt="lsblk" style="display: block; margin: 0 auto; width: 100%; height: auto;">
+    <br><br>
+  - Hoặc để có thêm thông tin về định dạng file system:
+  ```bash
+  lsblk -f
+  ```
+    - <img src="./img/Linux_lsblk_usbboot_2.png" alt="lsblk -f" style="display: block; margin: 0 auto; width: 100%; height: auto;">
+  - Đảm bảo xác định đúng tên thiết bị USB của bạn (ví dụ: `/dev/sdb`, `/dev/sdc`, v.v.). **Tuyệt đối không nhầm lẫn với ổ đĩa hệ thống chính của bạn để tránh mất dữ liệu.** Tên USB thường có dạng `sdX` và các phân vùng con là `sdXi` (ví dụ: `sdb1`, `sdb2`).
 
 * **Bước 2: Ngắt kết nối các phân vùng của USB (`umount`)**
     Các phân vùng trên USB cần được ngắt kết nối (`unmount`) để hệ thống không bị "khóa" chúng khi ghi file ISO.
@@ -246,9 +249,9 @@ Sau khi lệnh dd hoàn tất, sử dụng lệnh `sync` để đảm bảo mọ
 
   ```
 - Ưu điểm cách này là có thể vào đưuọc nhiều hệ điều hành khi khởi động
-  - Không cần thiết phải cài os-prober trên các hệ điều hành khác vì hiệu ứng vẫn tương tự chả khác gì mà 
-  còn phải tốn cồn thêm 1 lần `grub-install` dễ gây lỗi nội dung `MBR`
-
+  - dù không cần cài lại `grub` nhưng khi có hệ điều hành mới vẫn cần chạy `update-grub` để nó 
+  tạo file cấu hình hệ thống đích. Nếu không khi boot hệ thống đích không có config có thể lỗi  
+  `No bootloader` hoặc nhảy vào terminal với `grub>`
 
 ### 4. Cấu hệ thống UEFI (HDD, SATA, NVME)
 - [Setup GPT partion](https://askubuntu.com/questions/1253586/how-can-lubuntu-20-04-lts-be-installed-in-a-usb-which-can-boot-into-both-uefi)
@@ -264,12 +267,3 @@ Sau khi lệnh dd hoàn tất, sử dụng lệnh `sync` để đảm bảo mọ
 # Lưu ý quan trong khi chuyển đổi giữa các giao diện Ubuntu (Flavors)
 - Tốt nhất là cứ tải các bản DE về nhưng đừng gỡ bản cũ vì nó gây lỗi giao diện nếu khoogn biết thao tác.
 - Giữ lại bản cũ đôi khi dễ hơn khi chuyển qua lại các giao diện qua đăng nhập
-
-
-## V. Xử lý lỗi
-### 1 Lỗi Khởi động màn hình terminal sau khi cài Lubuntu
-
-### 2 Lỗi thiếu driver card mạng
-
-
-### 3 Cài bộ gõ tiếng việt

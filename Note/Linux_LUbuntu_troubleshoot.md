@@ -1,6 +1,10 @@
 # Troubleshoot LUbuntu after installed
-- Booting
-    - [OS reboot display white black terminal]
+- Booting / Disk partitions
+    - OS reboot display white black terminal
+        - Retry link `Boot partition` and retry `update-grub`, setup bind automatic with `Boot partion` everytime reboot
+    - Update partition designed if OS not accept it
+        - Link `Swap partition` designed with OS everytime reboot
+    
 - Missing driver
     - [Auto find missing driver](#2-using-default-check-driver-software-additionnal-drivers)
 - Internet
@@ -13,6 +17,82 @@
     - [Fix by apt](#app-fix-missing-dependencies)
     - [AppImage: require FUSE](#2-appimage-require-fuse)
     - [AppImage: chrome-sandbox is owned by root and has mode 4755](#3-appimage-chrome-sandbox-is-owned-by-root-and-has-mode-4755)
+
+## Booting 
+### Operating system
+Result of boot problem below after install new `Lubuntu` from `USB boot` is before `chroot` to  
+config `root` partition hasn't bind, mount enough requirements.
+- Result is `grub-install` success but `update-grub` make config files were broken or wrong way.
+<img src="./img/Lubun_boot_terminal.jpg" alt="boot in grubsecure" 
+style="display: block; margin: 0 auto; width: 100%; height: auto;">
+
+- Solution:
+    ```bash
+    grub> ls
+    # Now we have list of partitions have create by USB live
+
+    (hd0) (hd0,gpt1) (hd0,gpt2) ...
+
+    # try `ls` each partitons until find partions like `root`
+    ls (hd0,gpt1)/
+
+    # try find to `/boot/grub`
+    # if found then try
+    set root=(hd0,gpt1)
+    set prefix=(hd0,gpt2)/boot/grub
+    insmod normal
+    normal
+
+    ```
+    - If lucky then success boot into LUbuntu GUI
+        - Now when in real environment try:
+        ```bash
+        lsblk -f
+        lsblk
+        # try find the partition `root`
+        
+        # mount root partition line sdXi, note that sdXi do not choose sdX
+        sudo mount /dev/sdXi # `/` ~ very large GB
+
+        # mount EFI partition
+        sudo mount /dev/sdXj # EFI ~ 100MB - 500 MB
+
+        # try re grub-install
+        sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=lubun_1
+
+        # try reupdate grub
+        sudo update-grub
+        ```
+
+## Link `Swap partition` designed with OS everytime reboot
+- `Check`:
+    - Open Lubuntu, try run `htop` here can see `SWAP` is something wrong, it quite small (only default swap file create by linux)
+    - Or type `lsblk` see partion not have `mount point` is `[SWAP]`, it only empty
+- `Reason` of problem swap partion not using by OS is it was formated wrong `file system`.
+    - Ubuntu require a swap partitions is `linuxswap` format, but it can format to another type like `ext4` or any option supply by `USB live` or other `Disk partition manager`
+- `Solution` is boot in LUbuntu OS, using `KDE Partition manager`, choose right partitions `Swap` then format it to `linuxswap filesystem`
+    - Now run `file`, it will check type of `SWAP` partition:
+    ```bash
+    sudo file -s /dev/nvme0n1p1
+    
+    # my partition for swap is nvme0n1p1 when check by `lsblk` or `KDE pm`
+    /dev/nvme0n1p1: Linux swap file, 4k page size, little endian, version 1, size 524287 pages, 0 bad pages, LABEL=SWAP_MEM, UUID=e5ab7962-ce8e-4962-b685-3a0bd777ed3d
+    # this inform point that this partition success format to Linux swap file
+    # remember UUID=e5...
+
+    ```
+    - Last one, register this partitions with OS by run:
+    ```bash
+    # (this optional), we can find a `/swapfile` by OS auto gen when it run at origin here
+    # try note it by \#/swapfile  swap    swap    defaults   0 0
+    # then add Swap partition
+    UUID=e5ab7962-ce8e-4962-b685-3a0bd777ed3d none swap sw 0 0
+
+    # last one 
+    sudo swapoff -a
+    sudo swapon -a
+    ```
+    - Run `htop` now will update size == size of swap partition
 
 ## Internet connect faied
 
@@ -59,7 +139,8 @@
 sudo apt update
 sudo apt install ibus-unikey
 
-ibus-setup # set up in IBUS GUI
+ibus-setup # set up unikey typing in IBUS GUI
+            # set up key combine `Shift+space`. Window + space not working
 
 ibus restart
 ```
