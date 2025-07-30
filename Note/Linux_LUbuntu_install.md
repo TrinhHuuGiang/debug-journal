@@ -198,11 +198,11 @@ Sau khi lệnh dd hoàn tất, sử dụng lệnh `sync` để đảm bảo mọ
 - Giờ cấu hình liên kết với hệ điều hành Lubuntu để cài hệ thống `GRUB`:
   - chạy tập lệnh:
   ```bash
-  sudo mount /dev/nvme0n1p1 local_lubun_root # bind với hệ thống file thật
+  sudo mount /dev/nvme0n1p1 local_lubun_root # mount với hệ thống file thật (chương trình khác vẫn được mount nhưng có cảnh báo readonly hoặc gì đó)
 
   sudo mount --bind /dev  local_lubun_root/dev # file ảo phải bind thì không có hệ thông file để link
-  sudo mount --bind /proc local_lubun_root/proc
-  sudo mount --bind /sys  local_lubun_root/sys
+  sudo mount -t proc proc local_lubun_root/proc # tạo lại 1 cây process ảo cho chroot
+  sudo mount -t sys sys  local_lubun_root/sys   # tạo lại cấu trúc hệ thống ảo cho chroot về kernel, ổ cứng , ...
 
   sudo chroot local_lubun_root
 
@@ -222,10 +222,33 @@ Sau khi lệnh dd hoàn tất, sử dụng lệnh `sync` để đảm bảo mọ
     - Cài `GRUB` theo chế độ `legacy mode` hỗ trợ ssd sata, hdd nhưng nvme hầu như không hỗ trợ nếu bios Legacy đời cũ không hiểu giao tiếp nvme và thường bị bỏ qua khi duyệt:
       ```bash
       grub-install /dev/[harddrive] # ổ tùy máy nhưng không bên dùng Legacy cho nvme, chỉ nên HDD hoặc sata
+                                    # grub-install chỉ nên gọi 1 lần để đánh dấu đây là hệ điều hành chính
 
       update-grub # cập nhật file GRUB config cho hệ điều hành
       ```
-    - Dưới đây `GRUB` theo chế độ `UEFI` hỗ trợ tốt cho sata và nvme
+    - Phần sau sẽ nói về `GRUB` theo chế độ `UEFI` hỗ trợ tốt cho sata và nvme
+
+#### 3.5 Cách chuyển qua lại các OS
+- Để giảm số lần ghi lại bootloader `GRUB` bằng `grub-install` ta thống nhất 1 hệ điều hành chính sẽ được boot mặc định
+  - `grub-install` không chỉ có tác dụng ghi bootloader, nó còn có trường thông tin cảu hệ điều hành cuối cùng gọi nó
+    - Vì vậy mỗi lần boot là nó nhảy luôn vào hệ điều hành chính
+- Để kích hoạt chế độ chọn OS, ta thực hiện vào OS chính và kiểm tra:
+  ```bash
+  cat /etc/default/grub | grep OS_PROBER
+  # Nếu GRUB_DISABLE_OS_PROBER=true thì sửa thành false để cho phép `os-prober` tìm các partions chức hệ điều hành
+
+  # Giờ cần cài os-prober, phần mềm này được `update-grub` tự động gọi ra để quét ổ cứng
+  sudo apt update
+  sudo apt install os-prober
+
+  # Cập nhật danh sách hệ điều hành
+  sudo update-grub # gọi đến `os-prober` và cập nhật vào file config
+
+  ```
+- Ưu điểm cách này là có thể vào đưuọc nhiều hệ điều hành khi khởi động
+  - Không cần thiết phải cài os-prober trên các hệ điều hành khác vì hiệu ứng vẫn tương tự chả khác gì mà 
+  còn phải tốn cồn thêm 1 lần `grub-install` dễ gây lỗi nội dung `MBR`
+
 
 ### 4. Cấu hệ thống UEFI (HDD, SATA, NVME)
 - [Setup GPT partion](https://askubuntu.com/questions/1253586/how-can-lubuntu-20-04-lts-be-installed-in-a-usb-which-can-boot-into-both-uefi)
@@ -241,3 +264,12 @@ Sau khi lệnh dd hoàn tất, sử dụng lệnh `sync` để đảm bảo mọ
 # Lưu ý quan trong khi chuyển đổi giữa các giao diện Ubuntu (Flavors)
 - Tốt nhất là cứ tải các bản DE về nhưng đừng gỡ bản cũ vì nó gây lỗi giao diện nếu khoogn biết thao tác.
 - Giữ lại bản cũ đôi khi dễ hơn khi chuyển qua lại các giao diện qua đăng nhập
+
+
+## V. Xử lý lỗi
+### 1 Lỗi Khởi động màn hình terminal sau khi cài Lubuntu
+
+### 2 Lỗi thiếu driver card mạng
+
+
+### 3 Cài bộ gõ tiếng việt
