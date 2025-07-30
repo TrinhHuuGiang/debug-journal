@@ -9,7 +9,8 @@
 - Keyboard
     - [Missing Vietnamese]
     - [Touchpad tap-to-click fail](#1-touchpad-tap-to-click-fail)
-
+- dpkg install, AppImage missing dependencies
+    - [Fix by apt]()
 
 ## Internet connect faied
 
@@ -52,3 +53,11 @@
 ## Keyboard troubleshoot
 ### 1. Touchpad tap-to-click fail
 s
+
+
+## App fix missing dependencies
+### 1. Fix by app
+```bash
+sudo apt --fix-broken install
+```
+- Then try reinstall package was failed
