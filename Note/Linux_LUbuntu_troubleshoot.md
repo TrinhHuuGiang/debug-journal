@@ -10,7 +10,9 @@
     - [Missing Vietnamese]
     - [Touchpad tap-to-click fail](#1-touchpad-tap-to-click-fail)
 - dpkg install, AppImage missing dependencies
-    - [Fix by apt]()
+    - [Fix by apt](#app-fix-missing-dependencies)
+    - [AppImage: require FUSE]
+    - [AppImage: chrome-sandbox is owned by root and has mode 4755]
 
 ## Internet connect faied
 
@@ -61,3 +63,26 @@ s
 sudo apt --fix-broken install
 ```
 - Then try reinstall package was failed
+
+### 2. AppImage require FUSE
+```bash
+dlopen(): error loading libfuse.so.2
+
+AppImages require FUSE to run. 
+You might still be able to extract the contents of this AppImage 
+if you run it with the --appimage-extract option. 
+See https://github.com/AppImage/AppImageKit/wiki/FUSE 
+for more information
+```
+
+- Fix by install package:
+```bash
+sudo apt update
+sudo apt install libfuse2
+```
+
+## 3. AppImage chrome-sandbox is owned by root and has mode 4755.
+- Solution is add `--no-sandbox`
+```bash
+./arduino-ide_nightly-20250730_Linux_64bit.AppImage --no-sandbox
+```
