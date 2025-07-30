@@ -51,3 +51,4 @@
 
 ## Keyboard troubleshoot
 ### 1. Touchpad tap-to-click fail
+s
