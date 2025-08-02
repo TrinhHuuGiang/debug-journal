@@ -3,6 +3,8 @@
 - [bugs](./Some_bugs/)
 
 ## bugs
+- Fix GPU
+- Fix printer
 - Using `shell` with `export` variable
 
 ## note 
