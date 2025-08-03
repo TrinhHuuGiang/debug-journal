@@ -11,7 +11,7 @@
         - [1. Try install necessary drivers](#driver-solution-1---missing-necessary-drivers)
         - [2. Try install another suggest drivers](#driver-solution-2---try-install-other-libaries-if-missing)
         - [3. Try reinstall cndrvcups](#driver-solution-3---remove-cndrvcups-capt-amd64-and-install-version-i386) 
-    - [Docker to an lower OS like 14.04](#docker)
+    - [Wine, Docker, Virtual Machine, parallel OS ... to an lower OS like 14.04 or window](#wine-docker-virtual-machine-parallel-os--to-an-lower-os-like-1404-or-window)
         - [Clean current OS, delete old config did above]()
 
 # Download canon printer driver from cannon:
@@ -102,7 +102,7 @@ it say `Print done` bit printer do nothing, then check `dmesg` as above.
     ```
 ### Turn on `apparmor` it not using this method
 ```bash
-sudo aa-complain /usr/sbin/cupsd # only warn but not block when interract with usb connect
+sudo aa-enforce /usr/sbin/cupsd # only warn but not block when interract with usb connect
 ```
 
 ## Error `ps` say 100% and print success but nothing printed
@@ -342,9 +342,39 @@ Errors were encountered while processing:
 
 ```
 
-## Docker
+## Wine, Docker, Virtual Machine, parallel OS ... to an lower OS like 14.04 or window
 
 ### Clean config above, recover OS
 - [Enfore /usr/sbin/cupsd if has been changed `complain`](#turn-on-apparmor-it-not-using-this-method)
 - [Remove, purge capt driver](#reinstall-driver-amd64)
-- [Turn on driver usblp](Turn on `usblp` if it not help need)
+- [Turn on driver usblp](#turn-on-usblp-if-it-not-help-need)
+
+### Why choose Virtual machine
+
+### Install Virtual box and text print on Ubuntu 14.10 (Lastest version Ubuntu support LBP2900 has been mentioned in file [README](./doc/README-capt-2.71UK.txt))
+- [To do Create virtual machine](../../How_to_do/Linux_VM_virtualbox.md)
+- [Download Ubuntu 14.10](http://old-releases.ubuntu.com/releases/14.10/)
+- [Or another Ubuntu](https://old-releases.ubuntu.com/releases/)
+
+#### 0. Note when setup VM Ubuntu 14.10
+- Suggest: VM need HardDisk >= `15GB`. (I test at 5GB -> OS auto create 1GB swap, after setup Lubuntu GUI, system not enough memory then crash)
+- Fix deprecated link to `apt` before download any package. See below
+
+#### 1. Setup if installed OS missing a GUI, try install lightweight Lubuntu GUI
+- First update `apt` repositories, they have been deprecated
+```bash
+# Comment all old link has been deprecated
+# Then add these link to old 
+deb http://old-releases.ubuntu.com/ubuntu/ utopic main restricted universe multiverse
+deb http://old-releases.ubuntu.com/ubuntu/ utopic-updates main restricted universe multiverse
+deb http://old-releases.ubuntu.com/ubuntu/ utopic-security main restricted universe multiverse
+deb http://old-releases.ubuntu.com/ubuntu/ utopic-backports main restricted universe multiverse
+# `utopic` is name of version 14.10 (https://old-releases.ubuntu.com/releases/)
+```
+- Try update then install lighweight Lubuntu desktop
+```bash
+sudo apt-get update
+
+sudo apt-get install lubuntu-desktop
+# other GUI: xubuntu-desktop, ubuntu-gnome-desktop, kubuntu-desktop,...
+```

@@ -268,3 +268,25 @@ Sau khi lệnh dd hoàn tất, sử dụng lệnh `sync` để đảm bảo mọ
 # Lưu ý quan trong khi chuyển đổi giữa các giao diện Ubuntu (Flavors)
 - Tốt nhất là cứ tải các bản DE về nhưng đừng gỡ bản cũ vì nó gây lỗi giao diện nếu khoogn biết thao tác.
 - Giữ lại bản cũ đôi khi dễ hơn khi chuyển qua lại các giao diện qua đăng nhập
+
+## Nếu cài chưa có giao diện Lubuntu có thể cài bằng lệnh
+
+``` bash
+sudo apt update 
+sudo apt install lubuntu-desktop
+```
+
+### Lỗi không kết nối được đến `apt`
+- Kiểm tra file cấu hình DNS server
+```bash
+cat /etc/resolv.conf
+
+#if missing 8.8.8.8 , 8.8.4.4 (google), 1.1.1.1 (cloudflare)
+#try
+vi /etc/resolv.conf
+
+# add
+# nameserver 1.1.1.1
+# nameserver 8.8.8.8
+# nameserver 8.8.4.4
+```
