@@ -378,3 +378,18 @@ sudo apt-get update
 sudo apt-get install lubuntu-desktop
 # other GUI: xubuntu-desktop, ubuntu-gnome-desktop, kubuntu-desktop,...
 ```
+
+- After installed, `sudo reboot` then we can use Lubuntu
+
+#### 2. Main OS get, put file by `sftp`, `scp` from, to Virtual machine
+- Best choice on this situation, choice `Host-only Adapter`
+
+- First create `Virtualbox host-only networks manager`
+    - Reason by ![Hostonly nothing option to choose](./img/Linux_VM_no_host_only.jpg)
+    - Go to `Virtual box GUI` -> `File` -> `Tools` -> `Network manager`
+    - `Create a Host-only Network`
+        - Default netmask `255.255.255.0`, net IP `192.168.56.0`, host id `3->254`  
+        - But has a bug, I don't know why this version can't modify these range of ip
+    - ![Network manager](./img/Linux_VM_network_manager.jpg)
+
+- Now return VM settings and chose `vboxnet0` like above

@@ -20,10 +20,22 @@ sudo apt install virtualbox
             - If tick `Pre-allocate Full Size`, size will dynamic increase at runtime but still limit by setup size hardisk
 ## After install VM, try `Settings` to register hardware with main OS
 ### 1. tab `Network`:
-- NAT using the same ip with main OS when connect internet but register by OS an virtual IP  
-help distinguish whose package
-- Bridged Adapter, VM give new IP from network differ from main OS IP
-- Other solution: Host-Only Adapter, Internal Network,...
+- NAT or `Network Address Translation` is the default mode and is suitable for most users who need to browse the internet from their VM. In this mode, the VM is assigned a `private IP` address `within a virtual network` created by VirtualBox. The host OS acts as a router, translating the VM's network traffic so it appears to originate from the host's IP address. This allows the VM to access the internet and the host's local network. 
+    - However, devices on the external network cannot directly access the VM unless you configure Port Forwarding on both `Home router` and `Virtual box`. It is normal because now VM acts as a server.
+
+---
+- `Bridged Adapter` 
+    - The VM will obtain its own IP address from your network's DHCP server (usually your router), making it a peer on the network. This mode is ideal for running servers within the VM, as it allows other devices on the network to access it directly via its own IP address (Still need port forward it acts as a server).
+
+---
+- `Host-only adapter` This mode creates `a private network `between `the host` machine `and the VM`. The VM and the host can communicate with each other using `virtual IP addresses` assigned within this `private network`. This mode is perfect for scenarios where you need to `isolate the VM from the internet` and the external network while still allowing communication with the host. It does not require an active Wi-Fi or Ethernet connection on the host.
+    - Very useful and easy setup in private share file beetween 2 host OS and VM by `scp`, `sftp`, or `ssh`
+
+---
+- Internal Network
+    - This mode creates a completely isolated virtual network that exists only between VMs connected to it. The VMs can communicate with each other, but they are completely cut off from the host machine and any external networks. This is the ideal mode for setting up secure and isolated test environments, such as a multi-tier web application or a penetration testing lab.
+
+
 ### 2. tab `Serial port`
 ### 3. tab `USB`
 
@@ -31,10 +43,8 @@ help distinguish whose package
 #### VM is a linux
 -[youtube](https://www.youtube.com/watch?v=h_adwDledYM)
 
-
 #### VM with window
-
-
+- The same on youtube
 
 # Error log
 ## 1. VirtualBox can't operate in VMX root mode. 
