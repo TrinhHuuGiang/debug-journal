@@ -429,5 +429,48 @@ ps -e | grep ssh
 
 - Last one start `sshd` server:
 ```bash
-sshd -p 1024 # any port 1024 - 65535 if it not using by other service
+sudo /usr/sbin/sshd -p 1024 # any port 1024 - 65535 if it not using by other service
 ```
+
+- Client (main OS) side using `ssh` to connect:
+```bash
+# using ip addr to identify host ip
+ip addr
+
+# using `nmap` to scan ip
+nmap -p 1024 192.168.56.0/24
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-08-04 09:32 +07
+Nmap scan report for 192.168.56.1 (192.168.56.1)
+Host is up (0.00032s latency).
+
+PORT     STATE  SERVICE
+1024/tcp closed kdm
+
+Nmap scan report for 192.168.56.3 (192.168.56.3)
+Host is up (0.00059s latency).
+
+PORT     STATE SERVICE
+1024/tcp open  kdm
+
+Nmap done: 256 IP addresses (2 hosts up) scanned in 2.97 seconds
+```
+
+- Now we know ip of virtual machine is 192.168.56.3
+- Now `ssh` `sftp` `scp` to it:
+```bash
+ssh -p 1024 (VMusername)@192.168.56.3
+sftp -P 1024 (VMusername)@192.168.56.3
+scp -P 1024 (VMusername)@192.168.56.3
+```
+
+##### Troubleshoot when can't connect
+1. check firewall of VM
+```bash
+sudo ufw status
+
+# if inactive so firewall is off, This is not reason
+```
+
+2. Ensure the run `sudo /usr/sbin/sshd -p 1024`:
+- Do not missing `sudo`
+- open ringht port. Example: 1024
