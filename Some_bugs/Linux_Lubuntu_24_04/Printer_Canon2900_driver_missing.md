@@ -393,3 +393,41 @@ sudo apt-get install lubuntu-desktop
     - ![Network manager](./img/Linux_VM_network_manager.jpg)
 
 - Now return VM settings and chose `vboxnet0` like above
+
+##### Setup `ssh-server` in VM
+- Check: `dpkg | grep ssh`
+- Install ssh server
+```bash
+sudo apt-get update
+sudo apt-get install openssh-server
+```
+- [Refer to this repository how to setup a ssh server](https://github.com/TrinhHuuGiang/Learn-sqlite-and-linux/blob/master/Linux_command/Note/p2/_001_termux_install_ssh.md)
+
+- First check `sshd_config` to choose which types authentication, and turn on `Password` authen because we simple safe in using `Host-only network` and not connect to internet:
+```bash
+less /etc/ssd/unsshd_config
+
+# Turn on Password mode
+# try find comment line `#PasswordAuthenticaton yes` if it is commenting
+# or sometime it not comment
+
+# using vi or text editor uncomment it and sure `yes`, if `no` we can't login by password
+PasswordAuthenticaton yes
+```
+
+- Second, sure the service `ssh` is stop
+```bash
+ps -e | grep ssh
+
+# if exist something like that so `sshd` is auto running by service
+[pid] [time] sshd
+# try stop by one of this method it:
+#   1. sudo pkill -9 sshd # if not effect after check `ps` try below
+#   2. sudo systemctl stop ssh # if not effect or fail try below
+#   3. sudo service ssh stop
+```
+
+- Last one start `sshd` server:
+```bash
+sshd -p 1024 # any port 1024 - 65535 if it not using by other service
+```
