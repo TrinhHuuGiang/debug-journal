@@ -1,5 +1,10 @@
+# Note:
+- All solutions below are for reference only, I tested LBP2900 printer on linux 24.04 and virtual machine 14.04 and it didn't work. Only the case of virtual machine windows is positive.
+
 # Using ` cups - Common Unix Printing System `- manage printer:
 - `http://localhost:631`
+
+# Catalog
 - If missing driver for printer like Canon LPB2900, see how to fix below
     - [missing driver](#error-package-libglade2-0-is-not-installed)
     - [missing cups](#install-cups-when-not-install)
@@ -11,8 +16,10 @@
         - [1. Try install necessary drivers](#driver-solution-1---missing-necessary-drivers)
         - [2. Try install another suggest drivers](#driver-solution-2---try-install-other-libaries-if-missing)
         - [3. Try reinstall cndrvcups](#driver-solution-3---remove-cndrvcups-capt-amd64-and-install-version-i386) 
-    - [Wine, Docker, Virtual Machine, parallel OS ... to an lower OS like 14.04 or window](#wine-docker-virtual-machine-parallel-os--to-an-lower-os-like-1404-or-window)
-        - [Clean current OS, delete old config did above]()
+    - [Virtual Machine, parallel OS ... to an lower OS like 14.04 or window](#virtual-machine-parallel-os--to-an-lower-os-like-1404-or-window)
+        - [Clean current OS, delete old config did above](#clean-config-above-recover-os)
+        - [Install VM ubutu 14.04](#install-virtual-box-and-text-print-on-ubuntu-1410-lastest-version-ubuntu-support-lbp2900-has-been-mentioned-in-file-readme)
+        - [Install VM Window 7](#install-virtualbox--window) 
 
 # Download canon printer driver from cannon:
 ## Error: `Package libglade2-0 is not installed`
@@ -342,7 +349,7 @@ Errors were encountered while processing:
 
 ```
 
-## Wine, Docker, Virtual Machine, parallel OS ... to an lower OS like 14.04 or window
+## Virtual Machine, parallel OS ... to an lower OS like 14.04 or window
 
 ### Clean config above, recover OS
 - [Enfore /usr/sbin/cupsd if has been changed `complain`](#turn-on-apparmor-it-not-using-this-method)
@@ -479,3 +486,13 @@ sudo ufw status
 - Then sure install [`USB driver for virtual box`](../../How_to_do/Linux_VM_virtualbox.md#3-tab-usb) 
 - Do sequence ahead step test for Lubuntu 24.04, then plug USB, register USB with `Virtual box`
 then open `CUPS` for print
+
+
+### Install Virtualbox + Window 7 + Hostonly Adapter mode 
+- References:
+    - Normal (custom, normal weight)
+        - ISO win7 (require x64 from MS: Harddisk > 20GB for OS) so VM maybe 30GB - 40GB
+        - Easy driver/ Wandriver offline
+    - All in one: Ghost win7 ISO (high weight, full setting, driver, app)
+- If doany thing but not have an effect, the last choice is install Virtual Window like window 7
+because it no longer update, goodchoice for stable machine offline, or short term online for some stuff.

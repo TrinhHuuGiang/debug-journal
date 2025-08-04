@@ -5,5 +5,10 @@
 - [p7z-rar](#p7z-rar)
 
 ## p7z-full
-
 ## p7z-rar
+
+## command
+- extract, enter password if need, create output folder if need
+```bash
+7z x -pYOUR_PASSWORD -o"./output_dir" file.7z
+```

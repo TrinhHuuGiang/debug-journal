@@ -11,7 +11,6 @@ sudo apt install virtualbox
 ```
 ## Basic setup virtual machine
 - Download `.iso` of OS then choose tab `New` in virtual box GUI
-    - Or we con choose a `Virtual machine` are available when choose `Type` of OS then Virtual box suggest them versions are available
 - Setup hardware pre install VM:
     - Base memory, numer processor: Accept about 25 - 50% resources
         - Example: 8GB ram -> accept 2GB - 4GB (main OS has 4GB rest to running)
@@ -71,6 +70,7 @@ sudo apt install virtualbox
         ```
         - After reboot, connect your usb device
         - Then go to Settings for `Virtual machine` want install usb, choose type of usb driver exist, Save then Run
+            - In virtual machine, run `lsusb` then usb device will appear
 
 ### 4. tab `Shared folder`
 #### VM is a linux
