@@ -4,6 +4,7 @@
 
 # Install
 - virtual box: https://www.virtualbox.org/wiki/Linux_Downloads
+- virtual box extension pack:
 ```bash
 sudo apt update
 sudo apt install virtualbox
@@ -37,7 +38,39 @@ sudo apt install virtualbox
 
 
 ### 2. tab `Serial port`
+
 ### 3. tab `USB`
+- Refer: https://www.youtube.com/watch?v=h-EOHbVqsJg
+
+- Here we need install `Virtualbox extension pack` otherwise default can't connect usb.
+    ```bash
+    virtualbox --help
+
+    # my version is 7.0.16 Ubuntu
+    Oracle VM VirtualBox VM Selector v7.0.16_Ubuntu
+    Copyright (C) 2005-2024 Oracle and/or its affiliates
+
+    No special options.
+
+    If you are looking for --startvm and related options, you need to use VirtualBoxVM.
+    ```
+- Find extension is suitable with virtualbox current version on internet.
+    - Example here is 7.0.16: https://download.virtualbox.org/virtualbox/7.0.16/
+    - Note if web facing with error like this:
+    ![error download](../Some_bugs/Linux_Lubuntu_24_04/img/error_down_extension)
+    - Solution is `save this page as` when right click on link 
+    - Now go to `Virtual Box` -> `File` -> `Tools`-> `Extension package manager`
+        - Add the file downloaded
+        - Open `Terminal` then add current user to group `vboxusers` otherwise can't choose usb port.
+        ```bash
+        sudo adduser $USER vboxusers #add user to vbox group. 
+        # Delete out group: sudo gpasswd -d $USER vboxusers
+        # Check group: groups $USER
+
+        sudo reboot # next session will valid 
+        ```
+        - After reboot, connect your usb device
+        - Then go to Settings for `Virtual machine` want install usb, choose type of usb driver exist, Save then Run
 
 ### 4. tab `Shared folder`
 #### VM is a linux

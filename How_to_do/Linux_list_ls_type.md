@@ -1,5 +1,6 @@
 - `lscpu` // CPU information
 - `lsblk` // Harddisk information
+- `df -h` // % hardisk memory 
 - `lspci` // Pheriperals
 - `lsusb` // Usb devices connected
 ---

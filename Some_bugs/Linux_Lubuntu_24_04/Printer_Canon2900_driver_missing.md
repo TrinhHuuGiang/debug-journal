@@ -474,3 +474,8 @@ sudo ufw status
 2. Ensure the run `sudo /usr/sbin/sshd -p 1024`:
 - Do not missing `sudo`
 - open ringht port. Example: 1024
+
+#### 3. Install printer driver as previous topic
+- Then sure install [`USB driver for virtual box`](../../How_to_do/Linux_VM_virtualbox.md#3-tab-usb) 
+- Do sequence ahead step test for Lubuntu 24.04, then plug USB, register USB with `Virtual box`
+then open `CUPS` for print
