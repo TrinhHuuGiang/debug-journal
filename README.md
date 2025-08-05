@@ -1,16 +1,23 @@
-# note-for-future
-- [note](./Note/)
-- [bugs](./Some_bugs/)
+# Debug journal
+- [How to do](./How_to_do/)
+- [Bugs fixed](./Some_bugs/)
 
-## bugs
-- Fix GPU
-- Fix printer
-- Using `shell` with `export` variable
 
-## note 
+## How to do 
 - C pointer to const, const pointer
 - Git config ssh
-- Wine using window in linux
+- Git filter, remove commit
+- Linux Wine using window
+- Linux list command
 - Linux check ssd health
 - Linux check usb connected
+- Linux 7z
 - Linux boot LUbuntu
+- Linux virtualbox
+- Win 10 openssh server
+
+## bugs
+- Linux
+    - Fix GPU
+    - Fix printer
+    - Using `shell` with `export` variable

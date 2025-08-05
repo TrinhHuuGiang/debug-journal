@@ -498,3 +498,4 @@ then open `CUPS` for print
     - (Recommend) All in one: Ghost win10 ISO ( lighter than all most ghost win 7 )
         - Then using [`ssh`, `sftp`](../../How_to_do/Win_10_win32openssh) or [share folder of `VirtualBox`](../../How_to_do/Linux_VM_virtualbox.md#4-tab-shared-folder)
 - If doany thing but not have an effect, the last choice is install Virtual Window like window 7 or Window 10 because they no longer update, goodchoice for stable machine offline, or short term online for some stuff.
+- Success when run on `window`
