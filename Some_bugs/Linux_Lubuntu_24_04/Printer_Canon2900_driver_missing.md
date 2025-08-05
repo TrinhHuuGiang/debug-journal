@@ -407,6 +407,7 @@ sudo apt-get install lubuntu-desktop
 ```bash
 sudo apt-get update
 sudo apt-get install openssh-server
+sudo ssh-keygen -A # create new ssh server key if missing
 ```
 - [Refer to this repository how to setup a ssh server](https://github.com/TrinhHuuGiang/Learn-sqlite-and-linux/blob/master/Linux_command/Note/p2/_001_termux_install_ssh.md)
 
@@ -488,11 +489,12 @@ sudo ufw status
 then open `CUPS` for print
 
 
-### Install Virtualbox + Window 7 + Hostonly Adapter mode 
+### Install Virtualbox + Window 7/10 + Hostonly Adapter mode 
 - References:
     - Normal (custom, normal weight)
         - ISO win7 (require x64 from MS: Harddisk > 20GB for OS) so VM maybe 30GB - 40GB
         - Easy driver/ Wandriver offline
     - All in one: Ghost win7 ISO (high weight, full setting, driver, app)
-- If doany thing but not have an effect, the last choice is install Virtual Window like window 7
-because it no longer update, goodchoice for stable machine offline, or short term online for some stuff.
+    - (Recommend) All in one: Ghost win10 ISO ( lighter than all most ghost win 7 )
+        - Then using [`ssh`, `sftp`](../../How_to_do/Win_10_win32openssh) or [share folder of `VirtualBox`](../../How_to_do/Linux_VM_virtualbox.md#4-tab-shared-folder)
+- If doany thing but not have an effect, the last choice is install Virtual Window like window 7 or Window 10 because they no longer update, goodchoice for stable machine offline, or short term online for some stuff.

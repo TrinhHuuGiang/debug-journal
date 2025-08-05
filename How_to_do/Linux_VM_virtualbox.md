@@ -77,7 +77,7 @@ sudo apt install virtualbox
 -[youtube](https://www.youtube.com/watch?v=h_adwDledYM)
 
 #### VM with window
-- The same on youtube
+- [youtube] https://www.youtube.com/watch?app=desktop&v=FYmck1G0fqY&t=73s
 
 # Error log
 ## 1. VirtualBox can't operate in VMX root mode. 
