@@ -14,3 +14,5 @@
 > `uptime`  // login status time
 - `ps` - `htop` - `top` // task manager
 > `dmesg -w` - `journalctl -f` // system error log
+- `id` // user information
+> `id -u` // uid
