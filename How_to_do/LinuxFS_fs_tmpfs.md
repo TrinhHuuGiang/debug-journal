@@ -86,5 +86,12 @@ General structure of root `/`, only root has permission:
 |/run|A "tmpfs" file system for system packages to place runtime data, socket files, and similar. This directory is flushed on boot|
 |/run/log/|Runtime system logs. System components may place private logs in this directory.|
 |/run/user/|Contains per-user runtime directories, each usually individually mounted "tmpfs" instances. Always writable, flushed at each reboot and when the user logs out.|
-|||
-|||
+|/usr|VENDOR-SUPPLIED OPERATING SYSTEM RESOURCES. Sources put here can be normal file or program installed by vendor (apt, python, sudo install, ...) and resources here can share with all users|
+|/usr/bin| Binaries and executables for user commands that shall appear in the $PATH search path. It is recommended not to place binaries in this directory that are not useful for invocation from a shell (such as daemon binaries); these should be placed in a subdirectory of /usr/lib/ instead.|
+|/usr/lib/| Static, private vendor data that is compatible with all architectures (though not necessarily architecture-independent). Note that this includes internal executables or other binaries that are not regularly invoked from a shell. Such binaries may be for any architecture supported by the system. Do not place public libraries in this directory|
+|...| others about /usr check in [References file hierarchy](#references-man-14578)|
+|/var| Persistent, variable system data. Writable during normal system operation. This directory might be pre-populated with vendor-supplied data, but applications should be able to reconstruct necessary files and directories in this subhierarchy should they be missing, as the system might start up without this directory being populated. Persistency is recommended, but optional, to support ephemeral systems. This directory might become available or writable only very late during boot. Components that are required to operate during early boot hence shall not unconditionally rely on this directory.|
+|| /var is not a pseudo filesystem like /run or /tmp, it has real partion on disk and common using it to save configuration of others program, after boot configuration still exist. |
+|/dev| file describe and anchor cho external hardware interact with system |
+|/dev/shm/| processes share memory |
+|/sys| this is pseudo filesystem `sysfs` create by kernel when open it. Some special file can write to interact with kernel, almost file is read to show  whole system status |
