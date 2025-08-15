@@ -8,8 +8,9 @@
 - Missing driver
     - [Auto find missing driver](#2-using-default-check-driver-software-additionnal-drivers)
 - Internet
-    - [Wifi connect faied](#wifi-connect-faied)
+    - [Wifi connect faied missing braodcom driver](#1-missing-broadcom-wireless-driver)
     - [Internet connected but can't browse DNS](#internet-connected-but-cant-browse-some-webpage)
+    - [Broadcom bluetooth missing firmware]()
 - Keyboard, touchpad
     - [Missing Vietnamese keyboard](#1-missing-vietnamese-typing)
     - [Touchpad tap-to-click fail](#2-touchpad-tap-to-click-fail)
@@ -154,6 +155,19 @@ style="display: block; margin: 0 auto; width: 100%; height: auto;">
     sudo apt install software-properties-gtk
     ```
 - Then check by tab `Additional Drivers`, install driver by list suggested
+
+### 3. Bluetooth `broadcom` missing firmware/driver 
+- Refer to: https://github.com/winterheart/broadcom-bt-firmware
+- Using `lsusb` or `lspci`, try find bluetooth model and download `hdh` firmware
+    - After that, add to `/lib/firmware/brcm/` example:
+        ```bash
+        sudo cp BCM43142A0-105b-e065.hcd /lib/firmware/brcm/
+        ```
+- Other solution is add user to group `bluetooth`
+    ```bash
+    sudo adduser $USER bluetooth
+    ```
+- Default bluetooth linux using `bluez` api anh `blueman` GUI
 
 ## Internet connected but can't browse some webpage
 ### 1. Missing register a DNS server
