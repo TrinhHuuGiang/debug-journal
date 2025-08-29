@@ -10,7 +10,7 @@
 - Internet
     - [Wifi connect faied missing braodcom driver](#1-missing-broadcom-wireless-driver)
     - [Internet connected but can't browse DNS](#internet-connected-but-cant-browse-some-webpage)
-    - [Broadcom bluetooth missing firmware]()
+    - [Broadcom bluetooth missing firmware](#3-bluetooth-broadcom-missing-firmwaredriver)
 - Keyboard, touchpad
     - [Missing Vietnamese keyboard](#1-missing-vietnamese-typing)
     - [Touchpad tap-to-click fail](#2-touchpad-tap-to-click-fail)
@@ -168,6 +168,22 @@ style="display: block; margin: 0 auto; width: 100%; height: auto;">
     sudo adduser $USER bluetooth
     ```
 - Default bluetooth linux using `bluez` api anh `blueman` GUI
+- The last one let check the `bluetooth.service`
+    ```bash
+        systemctl status bluetooth.service # or bluetooth
+
+        # if statis is stop, try turn on
+        sudo systemctl start bluetooth.service
+
+        # (not recommend) automatic start bluetooth when reboot
+        # bluetooth using general antenna with wifi 
+        # another thing it consume power for nothing so just `disable` and use `start` when need then `stop` when done.
+        sudo systemctl enable bluetooth.service
+
+
+        # restart pc
+        sudo reboot
+    ```
 
 ## Internet connected but can't browse some webpage
 ### 1. Missing register a DNS server
