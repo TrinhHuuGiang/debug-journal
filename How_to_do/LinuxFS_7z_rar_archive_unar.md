@@ -3,7 +3,7 @@
 # Archive / unarchive
 - [p7zip-full](#p7zip-full)
 - [p7zip-rar](#p7zip-rar)
-
+- [unrar](#unrar) another method extract rar5 if `7z` can't do
 
 
 | Mức nén (`-mx=N`) | Tên gọi   | Tốc độ nén  | Kích thước nén (vs gốc) | Tốn CPU | RAM dùng    | Dùng khi nào                         |
@@ -36,3 +36,13 @@
 
 ```
 
+
+## unrar
+```bash
+# install
+sudo apt install unrar
+
+# extract
+unrar x -op"output_folder" -p"password" "filename" 
+
+```
