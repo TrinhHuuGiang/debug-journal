@@ -1,5 +1,9 @@
-# Wildcard (Globbing) Bash - Tóm tắt
+# topic:
+- [wildcard](#wildcard-globbing-bash---tóm-tắt)
+- [wildcard recursive](#đệ-qui-với-wild-card-và-find)
+- [wildcard with link has spaces](#wildcard--đường-dẫn-có-space-trong-bash)
 
+# Wildcard (Globbing) Bash - Tóm tắt
 Ký tự:
 *       : 0 hoặc nhiều ký tự
 ?       : 1 ký tự
@@ -24,3 +28,12 @@ Cách dùng:
     - `-0` đọc null-terminated strings (\0) từ `stdin`
     - `cp -t dest/` `-t` know next string is output folder
       - if with out space the output folder at the last argument -> wrong when `xargs` append argument split from `stdin`.
+
+# Wildcard + đường dẫn có space trong Bash
+
+- Cách 1: escape space bằng \
+  - cp link\ to\ folder/*.bib dest/
+
+- Cách 2: quote đường dẫn
+  - cp "link to folder"/*.bib dest/
+
