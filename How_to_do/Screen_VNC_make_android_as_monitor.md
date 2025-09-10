@@ -26,13 +26,20 @@ Topic:
   ```
 2. run simple server
   ```bash
-    # normal desktop :0 , no authen, only share
+    # normal desktop :0 , no authen
     # port default 5900, run foreground and has kill by Ctrl + C or process manager
     x11vnc
 
     # optional if have a tigervnc server or some vnc server created a virtual destop
     x11vnc -display :1 # if another virtual desktop has code :1
                         # port = 5900 + desktop number = 5901
+  ```
+- Optimize for a mirror monitor
+  ```bash
+  x11vnc -forever -cursor arrow -ncache 20 -ncache_cr
+  # -forever sure not down server is any one out room
+  # `-cursor arrow` make main monitor curso display on client, set `-curso none` for hide
+  # -ncache 20 -ncache_cr optimize smooth, -ncache 20 can't higher 30
   ```
 - Warning from `Arch`:  
 *This will set up the VNC server with no authentication password. This means that anybody who has access to the computer's network can see and control your X session. You can simply set a password, as described below.*
