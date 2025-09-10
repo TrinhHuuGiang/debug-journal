@@ -72,8 +72,11 @@ Topic:
   # then input password and authen
 ```
 - we can recall above script to reset password
-3. `vncserver`
+---
+2. `vncserver`
+- Note: Viewer only see and interract with black screen.
 - After set password, run server:
-- Run `vncserver` to create a server, and a `:servernumber` will represent for this server
+- Run `vncserver -localhost no` to create a server connect to any netword (if yes this only connect to loopback 127.0.0.1), and a `:servernumber` will represent for this server
 - Run `vncserver -list` to check list of server and port, by default pỏt
 - Run kill a server `vncserver -kill :servernumber`, `servernumber` by default order 1, 2 ,3 ...
+---
