@@ -36,11 +36,12 @@ Topic:
   ```
 - Optimize for a mirror monitor
   ```bash
-  x11vnc -display :0 -forever -multiptr -cursor most -viewonly
+  x11vnc -display :0 -forever -viewonly -multiptr -cursor most -scale 854x480
   # -forever sure not down server is any one out room
   # `-cursor arrow` make main monitor curso display on client, set `-curso none` for hide, or ` -cursor most` for any available
   # -multiptr to display local server pointer to screen
   # -viewonly to set view only, only serve can interact with monitor
+  # -scale 854x480 == 480p , fix lag and crash GNOME
   ```
 - Warning from `Arch`:  
 *This will set up the VNC server with no authentication password. This means that anybody who has access to the computer's network can see and control your X session. You can simply set a password, as described below.*
