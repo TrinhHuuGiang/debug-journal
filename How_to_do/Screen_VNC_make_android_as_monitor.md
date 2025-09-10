@@ -3,9 +3,9 @@ Note:
 - **To connect to android, linux need `VNC Server`**
 
 Topic:
-- [Android viewer](android-side)
-- [Linux server](linux-side)
-- [Run server](run-a-server)
+- [Android viewer](#android-side)
+- [Linux server](#linux-side)
+- [Run server](#run-a-server)
   
 
 # 1. Android side
@@ -64,3 +64,16 @@ Topic:
 ```
 
 # 3. Run a server
+1. `vncpassword`
+- Alway setup password for vnc sesstion, else when `vncserver`  is creating still need input a password
+```bash
+  vncpassword
+
+  # then input password and authen
+```
+- we can recall above script to reset password
+3. `vncserver`
+- After set password, run server:
+- Run `vncserver` to create a server, and a `:servernumber` will represent for this server
+- Run `vncserver -list` to check list of server and port, by default pỏt
+- Run kill a server `vncserver -kill :servernumber`, `servernumber` by default order 1, 2 ,3 ...
