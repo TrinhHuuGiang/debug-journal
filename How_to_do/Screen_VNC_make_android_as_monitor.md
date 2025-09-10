@@ -1,7 +1,9 @@
 Note:
 - **To make android as a monitor for linux we need `VNC Viewer`**
 - **To connect to android, linux need `VNC Server`**
-
+  - x11vnc : if wanna share to others and work on current destop
+  - tigervnc: if wanna create new desktop server independence with main desktop
+  - realvnc (ignore server): suitable for client, complicated when implement on server 
 Topic:
 - [Android viewer](#android-side)
 - [Linux server](#linux-side)
@@ -13,8 +15,38 @@ Topic:
   - [link to download at Uptodown.com](https://vnc-viewer.en.uptodown.com/android/download/1049524381)
 
 # 2. Linux side
-- I recommend TigerVNC because it open source
-  - The RealVNC server need free licenses for offline but waste time to set up
+- Download: `x11vnc` see: https://wiki.archlinux.org/title/X11vnc
+1. install
+  ```bash
+    # menu application
+    sudo apt update
+
+    # install
+    sudo apt install x11vnc
+  ```
+2. run simple server
+  ```bash
+    # normal desktop :0 , no authen, only share
+    # port default 5900, run foreground and has kill by Ctrl + C or process manager
+    x11vnc
+
+    # optional if have a tigervnc server or some vnc server created a virtual destop
+    x11vnc -display :1 # if another virtual desktop has code :1
+                        # port = 5900 + desktop number = 5901
+  ```
+- Warning from `Arch`:  
+*This will set up the VNC server with no authentication password. This means that anybody who has access to the computer's network can see and control your X session. You can simply set a password, as described below.*
+
+3. Connect to server tips:
+- Can config network static ip to easy finds server
+
+4. Authen and accept interract (comming soon)
+
+   
+
+# 3. Other sharing VNC
+### Tiger VNC (comming soon)
+- TigerVNC open source and support create and share new session, independence with working monitor. It useful for other user use remote monitor but not interract with main monitor.
 - Dowload: 2025 version 1.15
   - [link to download VNC server](https://sourceforge.net/projects/tigervnc/files/stable/1.15.0/)
   - [link to download source code `tar.gz` at Github](https://github.com/TigerVNC/tigervnc/releases/tag/v1.15.0)
@@ -63,20 +95,25 @@ Topic:
 
 ```
 
-# 3. Run a server
-1. `vncpassword`
-- Alway setup password for vnc sesstion, else when `vncserver`  is creating still need input a password
-```bash
-  vncpassword
+3. Run a server
+- `vncpassword`
+  - Alway setup password for vnc sesstion, else when `vncserver`  is creating still need input a password
+  ```bash
+    vncpassword
+  
+    # then input password and authen
+  ```
+  - we can recall above script to reset password
+---
+- `vncserver`
+  - Note: Viewer now only see and interract with black screen will be created by server.
+  - After set password, run server:
+  - Run `vncserver -localhost no` to create a server connect to any netword (if yes this only connect to loopback 127.0.0.1), and a `:servernumber` will represent for this server
+    - Port `5900 + servernumber` will auto open to share server screen
+  - Run `vncserver -list` to check list of server and port, by default pỏt
+  - Run kill a server `vncserver -kill :servernumber`, `servernumber` by default order 1, 2 ,3 ...
+---
+- Last one, implement UI for this session: :( may be comming soon
 
-  # then input password and authen
-```
-- we can recall above script to reset password
----
-2. `vncserver`
-- Note: Viewer only see and interract with black screen.
-- After set password, run server:
-- Run `vncserver -localhost no` to create a server connect to any netword (if yes this only connect to loopback 127.0.0.1), and a `:servernumber` will represent for this server
-- Run `vncserver -list` to check list of server and port, by default pỏt
-- Run kill a server `vncserver -kill :servernumber`, `servernumber` by default order 1, 2 ,3 ...
----
+### RealVNC
+- The RealVNC server need free licenses for offline but waste time to set up so i ignore it
