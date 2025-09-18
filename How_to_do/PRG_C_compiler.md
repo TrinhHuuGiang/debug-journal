@@ -1,6 +1,12 @@
 ### References
 - [g++ cheat seat](https://bytes.usc.edu/cs104/wiki/gcc/)
 
+- Topic
+    - cheatsheet table for gcc/g++ normal executable
+    - (comingsoon) cheatsheet table for generate static link libraries `.a`
+    - (comingsoon) cheatsheet table for generate
+    dynamic link libraries `.so`
+
 ### Sumary cheatsheet table 
 - Syntax compile
     ```bash
