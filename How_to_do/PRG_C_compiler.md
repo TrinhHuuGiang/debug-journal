@@ -13,6 +13,12 @@
         # gcc --help or reference at header
         [gcc/g++] [-option] [execute output file] [input files ...]
     ```
+- Debug tools :
+    ```bash
+    g++ -g -fsanitize=address,undefined,leak -fno-omit-frame-pointer
+    -o out.run main.cpp
+    ```
+
 - using `gcc` for C and `g++` for C++ or object file `.o`
 
 |option|purpose|
