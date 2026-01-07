@@ -13,6 +13,8 @@
 9. MSYS2
 - MinGW-w64
 - python
+- sqlite3
+- ...
 10. Terminal
 11. Matlab
 12. Arduino
