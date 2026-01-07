@@ -11,7 +11,7 @@
 - TeX Live
 8. Stm32Cube
 9. MSYS2
-- MinGW-w64
+- MinGW-w64 (old), UCRT64 (new)
 - python
 - sqlite3
 - ...
