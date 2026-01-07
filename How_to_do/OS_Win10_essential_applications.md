@@ -1,4 +1,4 @@
-1. VsCode
+1. VsCode + Git
 - C/Cpp extention
 - LaTeX workshop
 2. FireFox
