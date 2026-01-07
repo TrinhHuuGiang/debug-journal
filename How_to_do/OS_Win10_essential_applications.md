@@ -4,7 +4,7 @@
 2. FireFox
 3. Espidf
 4. Proteus
-5. Ltspice
+5. Ltspice / Kicad
 6. Altium
 7. WSL
 - Okular
